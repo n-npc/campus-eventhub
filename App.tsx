@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import Header from './components/Header';
+import Header from './components/header';
 import InteractiveMap from './components/InteractiveMap';
 import EventList from './components/EventList';
 import EventForm from './components/EventForm';
+import NewsSection from './components/NewsSection';
 import { Event, AppView } from './types';
 import { INITIAL_EVENTS_DATA, FACULTIES_DATA } from './constants';
 import GlassCard from './components/GlassCard';
 import { Info, Mail } from 'react-feather';
+import MiniNewsSidebar from './components/MiniNewsSidebar';
 
 // Dynamically import AeroBackground with no SSR to avoid window is not defined errors
 const AeroBackground = dynamic(() => import('./components/AeroBackground'), {
@@ -149,39 +151,47 @@ const App: React.FC = () => {
           )}
           
           {currentView === AppView.EVENTS && (
-            <div className="space-y-8">
-              <GlassCard className="p-4 sm:p-6">
-                <h2 className="text-2xl font-semibold text-[#E14536] dark:text-[#FD7A03] mb-4 text-center">Mapa Interactivo del Campus</h2>
-                <InteractiveMap 
-                  onFacultySelect={handleFacultySelect} 
-                  selectedFacultyId={selectedFacultyId} 
-                />
-                {selectedFacultyId && (
-                  <button 
-                    onClick={() => handleFacultySelect(null)}
-                    className="mt-4 mx-auto block px-4 py-2 text-sm font-medium text-[#E14536] dark:text-[#FD7A03] bg-[#11B5C2]/50 dark:bg-[#11B5C2]/30 border border-[#11B5C2] dark:border-[#BBDD30] rounded-md hover:bg-[#BBDD30]/50 dark:hover:bg-[#BBDD30]/40 transition-colors"
-                  >
-                    Mostrar Todos los Eventos
-                  </button>
-                )}
-              </GlassCard>
-              
-              <GlassCard className="p-4 sm:p-6">
-                <h2 className="text-2xl font-semibold text-[#E14536] dark:text-[#FD7A03] mb-1 text-center">
-                  Eventos en: <span className="text-[#BBDD30] dark:text-[#FAE403]">{currentFacultyName}</span>
-                </h2>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 text-center mb-6">
-                  {selectedFacultyId ? `Explora los eventos programados para ${currentFacultyName}.` : `Descubre todos los eventos en el campus.`}
-                </p>
-                <EventList events={filteredEvents} />
-              </GlassCard>
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Sidebar left (shown on large screens) */}
+              <MiniNewsSidebar className="hidden lg:block w-72 flex-shrink-0" />
+
+              {/* Main event content */}
+              <div className="flex-1 space-y-8">
+                <GlassCard className="p-4 sm:p-6">
+                  <h2 className="text-2xl font-semibold text-[#E14536] dark:text-[#FD7A03] mb-4 text-center">Mapa Interactivo del Campus</h2>
+                  <InteractiveMap 
+                    onFacultySelect={handleFacultySelect} 
+                    selectedFacultyId={selectedFacultyId} 
+                  />
+                  {selectedFacultyId && (
+                    <button 
+                      onClick={() => handleFacultySelect(null)}
+                      className="mt-4 mx-auto block px-4 py-2 text-sm font-medium text-[#E14536] dark:text-[#FD7A03] bg-[#11B5C2]/50 dark:bg-[#11B5C2]/30 border border-[#11B5C2] dark:border-[#BBDD30] rounded-md hover:bg-[#BBDD30]/50 dark:hover:bg-[#BBDD30]/40 transition-colors"
+                    >
+                      Mostrar Todos los Eventos
+                    </button>
+                  )}
+                </GlassCard>
+                
+                <GlassCard className="p-4 sm:p-6">
+                  <h2 className="text-2xl font-semibold text-[#E14536] dark:text-[#FD7A03] mb-1 text-center">
+                    Eventos en: <span className="text-[#BBDD30] dark:text-[#FAE403]">{currentFacultyName}</span>
+                  </h2>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400 text-center mb-6">
+                    {selectedFacultyId ? `Explora los eventos programados para ${currentFacultyName}.` : `Descubre todos los eventos en el campus.`}
+                  </p>
+                  <EventList events={filteredEvents} />
+                </GlassCard>
+              </div>
             </div>
           )}
 
           {currentView === AppView.SUBMIT_EVENT && (
-            <AeroBackground>
-              <EventForm onSubmitEvent={handleSubmitEvent} />
-            </AeroBackground>
+            <EventForm onSubmitEvent={handleSubmitEvent} />
+          )}
+
+          {currentView === AppView.NEWS && (
+            <NewsSection />
           )}
         </div>
       </main>

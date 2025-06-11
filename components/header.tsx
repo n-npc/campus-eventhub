@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, Mail, Info, Calendar } from 'react-feather';
+import { Menu, X, Sun, Moon, Mail, Info, Calendar, FileText } from 'react-feather';
 import { AppView } from '../types';
 
 interface HeaderProps {
@@ -33,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({
     { id: 'events', label: 'Eventos', icon: Calendar, view: AppView.EVENTS },
     { id: 'submit', label: 'Enviar Evento', icon: Mail, view: AppView.SUBMIT_EVENT },
     { id: 'about', label: 'Acerca de', icon: Info, view: AppView.ABOUT },
+    { id: 'news', label: 'Noticias', icon: FileText, view: AppView.NEWS },
   ];
 
   return (

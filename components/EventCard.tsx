@@ -58,8 +58,8 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             }}
           />
           
-          {/* Tags container - moved to top */}
-          <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-2 z-20">
+          {/* Tags container - moved to top; reserve space for faculty badge (right) */}
+          <div className="absolute top-3 left-3 pr-24 max-w-[70%] flex flex-wrap gap-2 z-20">
             {event.categories.map((category, index) => (
               <span 
                 key={index}
